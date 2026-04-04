@@ -7,7 +7,6 @@ import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class FileUploadManager(private val context: Context) {
 
@@ -28,39 +27,33 @@ class FileUploadManager(private val context: Context) {
         onError: (String) -> Unit
     ) {
         if (storage == null) {
-            // Simulation mode
             simulateUpload(items.size, onProgress, onComplete)
             return
         }
 
-        CoroutineScope(Dispatchers.IO).launch {
-            val total = items.size
-            var uploaded = 0
+        val total = items.size
+        var uploaded = 0
 
-            for (item in items) {
-                try {
-                    val inputStream = context.contentResolver.openInputStream(item.uri)
-                    inputStream?.let { stream ->
-                        val ref = storage.child("shared/${System.currentTimeMillis()}_${item.name}")
-                        val uploadTask = ref.putStream(stream)
-
-                        uploadTask.addOnSuccessListener {
-                            uploaded++
-                            val progress = (uploaded * 100) / total
-                            withContext(Dispatchers.Main) { onProgress(progress) }
-                            if (uploaded == total) {
-                                CoroutineScope(Dispatchers.Main).launch { onComplete() }
-                            }
-                        }.addOnFailureListener { e ->
-                            Log.e(TAG, "Upload failed: ${e.message}")
-                            CoroutineScope(Dispatchers.Main).launch { onError(e.message ?: "Upload failed") }
-                        }
-                        stream.close()
+        for (item in items) {
+            try {
+                val inputStream = context.contentResolver.openInputStream(item.uri)
+                inputStream?.let { stream ->
+                    val ref = storage.child("shared/${System.currentTimeMillis()}_${item.name}")
+                    val uploadTask = ref.putStream(stream)
+                    uploadTask.addOnSuccessListener {
+                        uploaded++
+                        val progress = (uploaded * 100) / total
+                        onProgress(progress)
+                        if (uploaded == total) onComplete()
+                    }.addOnFailureListener { e ->
+                        Log.e(TAG, "Upload failed: ${e.message}")
+                        onError(e.message ?: "Upload failed")
                     }
-                } catch (e: Exception) {
-                    Log.e(TAG, "File access error: ${e.message}")
-                    withContext(Dispatchers.Main) { onError(e.message ?: "File access error") }
+                    stream.close()
                 }
+            } catch (e: Exception) {
+                Log.e(TAG, "File access error: ${e.message}")
+                onError(e.message ?: "File access error")
             }
         }
     }

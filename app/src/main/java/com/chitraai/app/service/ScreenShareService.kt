@@ -4,6 +4,7 @@ import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
+import android.app.Service
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.PixelFormat
@@ -14,10 +15,8 @@ import android.media.projection.MediaProjection
 import android.media.projection.MediaProjectionManager
 import android.os.Binder
 import android.os.IBinder
-import android.util.DisplayMetrics
 import android.util.Log
 import androidx.core.app.NotificationCompat
-import androidx.lifecycle.LifecycleService
 import com.chitraai.app.R
 import com.chitraai.app.manager.ConnectionManager
 import com.chitraai.app.ui.SessionActivity
@@ -28,7 +27,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 
-class ScreenShareService : LifecycleService() {
+class ScreenShareService : Service() {
 
     companion object {
         const val NOTIFICATION_CHANNEL_ID = "screen_share_channel"
@@ -48,7 +47,6 @@ class ScreenShareService : LifecycleService() {
     }
 
     override fun onBind(intent: Intent): IBinder {
-        super.onBind(intent)
         return binder
     }
 
@@ -59,7 +57,6 @@ class ScreenShareService : LifecycleService() {
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        super.onStartCommand(intent, flags, startId)
         startForeground(NOTIFICATION_ID, buildNotification())
 
         val resultCode = intent?.getIntExtra(SessionActivity.EXTRA_RESULT_CODE, -1) ?: -1
@@ -112,8 +109,6 @@ class ScreenShareService : LifecycleService() {
                             Bitmap.Config.ARGB_8888
                         )
                         bitmap.copyPixelsFromBuffer(buffer)
-
-                        // Send frame to connection manager for relay
                         connectionManager.sendFrame(bitmap)
                         bitmap.recycle()
                         it.close()
@@ -121,7 +116,7 @@ class ScreenShareService : LifecycleService() {
                 } catch (e: Exception) {
                     Log.e(TAG, "Frame capture error: ${e.message}")
                 }
-                delay(100) // ~10 FPS to conserve bandwidth
+                delay(100)
             }
         }
     }
@@ -149,7 +144,7 @@ class ScreenShareService : LifecycleService() {
 
         return NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
             .setContentTitle("Chitra AI — Screen Sharing Active")
-            .setContentText("Krish is viewing your screen. Tap to return.")
+            .setContentText("Krish is viewing your screen.")
             .setSmallIcon(R.drawable.ic_screen_share)
             .setPriority(NotificationCompat.PRIORITY_LOW)
             .setOngoing(true)
