@@ -1,8 +1,9 @@
 plugins {
-        id 'com.android.application'
-        id 'org.jetbrains.kotlin.android'
-        id 'com.google.gms.google-services'
-    }
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+    // Firebase plugin disabled until real google-services.json is set up
+    // id 'com.google.gms.google-services'
+}
 
 android {
     namespace 'com.chitraai.app'
@@ -47,11 +48,11 @@ dependencies {
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.7.0'
 
-    // Firebase BOM
-    implementation platform('com.google.firebase:firebase-bom:32.7.0')
-    implementation 'com.google.firebase:firebase-database-ktx'
-    implementation 'com.google.firebase:firebase-storage-ktx'
-    implementation 'com.google.firebase:firebase-auth-ktx'
+    // Firebase BOM - disabled until google-services.json is configured
+    // implementation platform('com.google.firebase:firebase-bom:32.7.0')
+    // implementation 'com.google.firebase:firebase-database-ktx'
+    // implementation 'com.google.firebase:firebase-storage-ktx'
+    // implementation 'com.google.firebase:firebase-auth-ktx'
 
     // Image loading
     implementation 'com.github.bumptech.glide:glide:4.16.0'

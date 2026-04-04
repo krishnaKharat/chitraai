@@ -52,8 +52,7 @@
         <!-- Session Activity -->
         <activity
             android:name=".ui.SessionActivity"
-            android:exported="false"
-            android:keepScreenOn="true" />
+            android:exported="false" />
 
         <!-- Gallery Activity -->
         <activity
