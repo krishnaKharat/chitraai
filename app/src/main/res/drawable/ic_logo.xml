@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="88dp"
+    android:height="88dp"
+    android:viewportWidth="88"
+    android:viewportHeight="88">
+
+    <!-- Outer ring -->
+    <path
+        android:pathData="M44,4 A40,40 0 1,1 43.99,4 Z"
+        android:fillColor="#1A00C896"
+        android:strokeColor="#00C896"
+        android:strokeWidth="1.5" />
+
+    <!-- Inner C shape / signal arc -->
+    <path
+        android:pathData="M56,28 C56,28 64,35 64,44 C64,53 56,60 56,60"
+        android:fillColor="#00000000"
+        android:strokeColor="#00C896"
+        android:strokeWidth="3"
+        android:strokeLineCap="round" />
+
+    <!-- Inner smaller arc -->
+    <path
+        android:pathData="M50,34 C50,34 56,38.5 56,44 C56,49.5 50,54 50,54"
+        android:fillColor="#00000000"
+        android:strokeColor="#D4AF37"
+        android:strokeWidth="2.5"
+        android:strokeLineCap="round" />
+
+    <!-- Center dot -->
+    <path
+        android:pathData="M44,40 A4,4 0 1,1 43.99,40 Z"
+        android:fillColor="#00C896" />
+
+    <!-- Left bracket -->
+    <path
+        android:pathData="M38,34 L30,44 L38,54"
+        android:fillColor="#00000000"
+        android:strokeColor="#888888"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round" />
+
+</vector>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="120dp"
+    android:height="120dp"
+    android:viewportWidth="120"
+    android:viewportHeight="120">
+
+    <!-- Outer glow ring -->
+    <path
+        android:pathData="M60,4 A56,56 0 1,1 59.99,4 Z"
+        android:fillColor="#1A00C896"
+        android:strokeColor="#00C896"
+        android:strokeWidth="1.5" />
+
+    <!-- Inner circle background -->
+    <path
+        android:pathData="M60,14 A46,46 0 1,1 59.99,14 Z"
+        android:fillColor="#1F1F1F" />
+
+    <!-- Head -->
+    <path
+        android:pathData="M60,38 A14,14 0 1,1 59.99,38 Z"
+        android:fillColor="#333333" />
+
+    <!-- Body/shoulders -->
+    <path
+        android:pathData="M30,88 C30,72 42,64 60,64 C78,64 90,72 90,88"
+        android:fillColor="#333333"
+        android:strokeColor="#00000000" />
+
+    <!-- Green accent line at bottom -->
+    <path
+        android:pathData="M42,104 L78,104"
+        android:strokeColor="#00C896"
+        android:strokeWidth="3"
+        android:strokeLineCap="round" />
+
+    <!-- Status indicator - online -->
+    <path
+        android:pathData="M90,30 A8,8 0 1,1 89.99,30 Z"
+        android:fillColor="#00C896" />
+
+</vector>

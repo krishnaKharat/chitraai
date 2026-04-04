@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+    android:layout_margin="3dp"
+    android:foreground="?attr/selectableItemBackground">
+
+    <!-- Force square aspect ratio: use a nested layout trick -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/iv_thumbnail"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:scaleType="centerCrop"
+            android:contentDescription="Media thumbnail"
+            android:background="@color/card_bg" />
+
+    </LinearLayout>
+
+    <!-- Video play icon overlay -->
+    <ImageView
+        android:id="@+id/iv_video_icon"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:src="@drawable/ic_play"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        android:alpha="0.85"
+        android:contentDescription="Video" />
+
+    <!-- Selection overlay -->
+    <View
+        android:id="@+id/overlay_selected"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#4000C896"
+        android:visibility="gone" />
+
+    <!-- Checkmark icon -->
+    <ImageView
+        android:id="@+id/iv_selected"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:src="@drawable/ic_check_circle"
+        android:layout_gravity="top|end"
+        android:layout_margin="6dp"
+        android:visibility="gone"
+        android:contentDescription="Selected" />
+
+</FrameLayout>

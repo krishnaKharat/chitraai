@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_dark">
+
+    <!-- Toolbar -->
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
+        android:layout_width="0dp"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/bg_dark"
+        app:title="Share Files"
+        app:titleTextColor="@color/white"
+        app:titleTextAppearance="@style/ToolbarTitle"
+        app:navigationIcon="@drawable/ic_back"
+        app:navigationIconTint="@color/white"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="@color/divider"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Gallery subtitle -->
+    <TextView
+        android:id="@+id/tv_gallery_hint"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Tap to select photos or videos to share with Krish"
+        android:textColor="@color/text_secondary"
+        android:textSize="13sp"
+        android:fontFamily="@font/inter_regular"
+        android:gravity="center"
+        android:padding="12dp"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Loading progress -->
+    <ProgressBar
+        android:id="@+id/progress_loading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:indeterminateTint="@color/primary_green"
+        android:visibility="visible"
+        app:layout_constraintTop_toBottomOf="@+id/tv_gallery_hint"
+        app:layout_constraintBottom_toTopOf="@+id/btn_send_selected"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Empty state -->
+    <TextView
+        android:id="@+id/tv_empty_state"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="No media found.\nGrant storage permission in Settings."
+        android:textColor="@color/text_secondary"
+        android:textSize="15sp"
+        android:gravity="center"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@+id/tv_gallery_hint"
+        app:layout_constraintBottom_toTopOf="@+id/btn_send_selected"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- RecyclerView grid -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_gallery"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:padding="3dp"
+        android:clipToPadding="false"
+        app:layout_constraintTop_toBottomOf="@+id/tv_gallery_hint"
+        app:layout_constraintBottom_toTopOf="@+id/upload_progress"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Upload progress bar -->
+    <ProgressBar
+        android:id="@+id/upload_progress"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="0dp"
+        android:layout_height="4dp"
+        android:progressTint="@color/primary_green"
+        android:progress="0"
+        android:max="100"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/btn_send_selected"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Send button -->
+    <Button
+        android:id="@+id/btn_send_selected"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:text="Select files to send"
+        android:textColor="@color/bg_dark"
+        android:textSize="15sp"
+        android:fontFamily="@font/poppins_semibold"
+        android:background="@drawable/btn_primary"
+        android:stateListAnimator="@null"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="28dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

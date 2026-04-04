@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_dark">
+
+    <!-- Top glow accent -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@drawable/gradient_top_line"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Background radial glow -->
+    <View
+        android:layout_width="400dp"
+        android:layout_height="400dp"
+        android:background="@drawable/glow_circle"
+        android:alpha="0.10"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Logo + Name -->
+    <ImageView
+        android:id="@+id/iv_logo"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:src="@drawable/ic_logo"
+        android:contentDescription="Logo"
+        android:layout_marginTop="52dp"
+        android:layout_marginStart="24dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_app_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Chitra AI"
+        android:textColor="@color/white"
+        android:textSize="22sp"
+        android:fontFamily="@font/poppins_semibold"
+        app:layout_constraintTop_toTopOf="@+id/iv_logo"
+        app:layout_constraintBottom_toTopOf="@+id/tv_tagline"
+        app:layout_constraintStart_toEndOf="@+id/iv_logo"
+        android:layout_marginStart="12dp" />
+
+    <TextView
+        android:id="@+id/tv_tagline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Family Support"
+        android:textColor="@color/primary_green"
+        android:textSize="12sp"
+        android:fontFamily="@font/inter_regular"
+        app:layout_constraintTop_toBottomOf="@+id/tv_app_name"
+        app:layout_constraintStart_toEndOf="@+id/iv_logo"
+        android:layout_marginStart="12dp"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_logo" />
+
+    <!-- Hero section - center of screen -->
+    <LinearLayout
+        android:id="@+id/layout_hero"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/cardStatus"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <!-- Avatar / Connect illustration -->
+        <ImageView
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:src="@drawable/ic_avatar_krish"
+            android:contentDescription="Krish"
+            android:layout_marginBottom="28dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Connect to Krish"
+            android:textColor="@color/white"
+            android:textSize="28sp"
+            android:fontFamily="@font/poppins_semibold"
+            android:gravity="center" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tap to share screen &amp; get help"
+            android:textColor="@color/text_secondary"
+            android:textSize="15sp"
+            android:fontFamily="@font/inter_regular"
+            android:gravity="center"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="40dp" />
+
+        <!-- Main connect button -->
+        <Button
+            android:id="@+id/btn_connect"
+            android:layout_width="260dp"
+            android:layout_height="64dp"
+            android:text="Connect to Krish"
+            android:textColor="@color/bg_dark"
+            android:textSize="17sp"
+            android:fontFamily="@font/poppins_semibold"
+            android:background="@drawable/btn_primary"
+            android:stateListAnimator="@null"
+            android:elevation="8dp" />
+
+        <!-- Gallery button -->
+        <Button
+            android:id="@+id/btn_gallery"
+            android:layout_width="200dp"
+            android:layout_height="48dp"
+            android:text="📂  Share Files"
+            android:textColor="@color/text_secondary"
+            android:textSize="14sp"
+            android:fontFamily="@font/inter_regular"
+            android:background="@drawable/btn_ghost"
+            android:stateListAnimator="@null"
+            android:layout_marginTop="14dp" />
+
+    </LinearLayout>
+
+    <!-- Status card at bottom -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardStatus"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="40dp"
+        app:cardBackgroundColor="@color/card_bg"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:padding="16dp">
+
+            <View
+                android:id="@+id/indicator_dot"
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:background="@drawable/dot_idle" />
+
+            <TextView
+                android:id="@+id/tv_status"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Ready to connect"
+                android:textColor="@color/text_secondary"
+                android:textSize="14sp"
+                android:fontFamily="@font/inter_regular"
+                android:layout_marginStart="10dp" />
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/ic_wifi"
+                android:contentDescription="Connection"
+                android:alpha="0.5" />
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

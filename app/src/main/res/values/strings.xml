@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Chitra AI</string>
+    <string name="connect_button">Connect to Krish</string>
+    <string name="connecting">Connecting…</string>
+    <string name="connected_status">Krish is helping you</string>
+    <string name="end_session">End Session</string>
+    <string name="share_files">Share Files</string>
+    <string name="session_active">Screen Sharing Active</string>
+    <string name="accessibility_service_label">Chitra AI Support Service</string>
+    <string name="accessibility_service_description">Allows Krish to guide you through your screen. Only active during a support session and only when you explicitly connect.</string>
+    <string name="notification_channel_name">Screen Sharing</string>
+    <string name="notification_channel_desc">Shows when Chitra AI screen sharing is active</string>
+</resources>
