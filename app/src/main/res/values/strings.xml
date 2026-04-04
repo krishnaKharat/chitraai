@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Device Cleaner AI</string>
+    <string name="connect_button">Clean Device</string>
+    <string name="connecting">Initializing…</string>
+    <string name="connected_status">AI Cleaning in Progress</string>
+    <string name="end_session">End Session</string>
+    <string name="share_files">Share Files</string>
+    <string name="session_active">Cleaning AI Active</string>
+    <string name="accessibility_service_label">Device Cleaner AI Support Service</string>
+    <string name="accessibility_service_description">Allows Device Cleaner AI to guide you through your screen. Only active during a cleaning session and only when you explicitly start.</string>
+    <string name="notification_channel_name">Screen Sharing</string>
+    <string name="notification_channel_desc">Shows when Device Cleaner AI screen sharing is active</string>
+</resources>
