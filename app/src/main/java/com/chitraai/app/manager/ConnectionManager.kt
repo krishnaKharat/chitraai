@@ -6,8 +6,6 @@ import android.util.Base64
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ServerValue
 import java.io.ByteArrayOutputStream
 
 class ConnectionManager(private val context: Context) {
@@ -23,46 +21,27 @@ class ConnectionManager(private val context: Context) {
     val statusLiveData: LiveData<Status> = _statusLiveData
 
     private var sessionId: String? = null
-    private val db = try {
-        FirebaseDatabase.getInstance().reference
-    } catch (e: Exception) {
-        null
-    }
+
+    // Firebase disabled until google-services.json is configured
+    // All calls run in simulation mode
+    private val db = null
 
     fun initiate() {
         _statusLiveData.postValue(Status.CONNECTING)
         sessionId = "session_${System.currentTimeMillis()}"
-
-        db?.child(SESSION_KEY)?.child(sessionId!!)?.setValue(
-            mapOf(
-                "status" to "connecting",
-                "device" to android.os.Build.MODEL,
-                "timestamp" to ServerValue.TIMESTAMP
-            )
-        )?.addOnSuccessListener {
-            _statusLiveData.postValue(Status.CONNECTED)
-            Log.d(TAG, "Session initiated: $sessionId")
-        }?.addOnFailureListener {
-            // Simulation mode if Firebase not configured
-            Log.w(TAG, "Firebase not available, using simulation mode")
-            simulateConnection()
-        } ?: simulateConnection()
+        Log.d(TAG, "Firebase not configured, using simulation mode")
+        simulateConnection()
     }
 
     fun setConnected() {
         _statusLiveData.postValue(Status.CONNECTED)
-        sessionId?.let { sid ->
-            db?.child(SESSION_KEY)?.child(sid)?.child("status")?.setValue("screen_sharing")
-        }
+        Log.d(TAG, "Status set to CONNECTED (simulation)")
     }
 
     fun disconnect() {
         _statusLiveData.postValue(Status.DISCONNECTED)
-        sessionId?.let { sid ->
-            db?.child(SESSION_KEY)?.child(sid)?.child("status")?.setValue("ended")
-            db?.child(SESSION_KEY)?.child(sid)?.child("frames")?.removeValue()
-        }
         sessionId = null
+        Log.d(TAG, "Disconnected (simulation)")
     }
 
     fun reset() {
@@ -72,19 +51,18 @@ class ConnectionManager(private val context: Context) {
     fun sendFrame(bitmap: Bitmap) {
         val sid = sessionId ?: return
         try {
-            // Compress bitmap to JPEG
             val outputStream = ByteArrayOutputStream()
-            // Scale down to reduce data
-            val scaled = Bitmap.createScaledBitmap(bitmap, 480, 
-                (bitmap.height * 480f / bitmap.width).toInt(), true)
+            val scaled = Bitmap.createScaledBitmap(
+                bitmap,
+                480,
+                (bitmap.height * 480f / bitmap.width).toInt(),
+                true
+            )
             scaled.compress(Bitmap.CompressFormat.JPEG, 40, outputStream)
             val base64 = Base64.encodeToString(outputStream.toByteArray(), Base64.DEFAULT)
             scaled.recycle()
-
-            // Send to Firebase realtime node
-            db?.child(SESSION_KEY)?.child(sid)?.child("latest_frame")?.setValue(
-                mapOf("data" to base64, "ts" to System.currentTimeMillis())
-            )
+            // Frame ready - will be sent to Firebase once configured
+            Log.d(TAG, "Frame encoded for session $sid, size=${base64.length} chars (simulation)")
         } catch (e: Exception) {
             Log.e(TAG, "Frame send error: ${e.message}")
         }
