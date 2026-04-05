@@ -1,21 +1,21 @@
 {
   "project_info": {
-    "project_number": "YOUR_PROJECT_NUMBER",
-    "project_id": "YOUR_PROJECT_ID",
-    "storage_bucket": "YOUR_PROJECT_ID.appspot.com"
+    "project_number": "595478045132",
+    "project_id": "bharat-drop",
+    "storage_bucket": "bharat-drop.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:YOUR_PROJECT_NUMBER:android:YOUR_APP_ID",
+        "mobilesdk_app_id": "1:595478045132:android:54f9497ccbf8d608323d69",
         "android_client_info": {
-          "package_name": "com.chitraai.app"
+          "package_name": "com.bharatdrop.app"
         }
       },
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "YOUR_API_KEY"
+          "current_key": "AIzaSyBcuIyxMPDARLM10nGUc3aBo6YNe38UWmE"
         }
       ],
       "services": {
