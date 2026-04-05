@@ -6,13 +6,15 @@ import android.util.Base64
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ServerValue
 import java.io.ByteArrayOutputStream
 
 class ConnectionManager(private val context: Context) {
 
     companion object {
         private const val TAG = "ConnectionManager"
-        private const val SESSION_KEY = "active_session"
+        const val SESSION_KEY = "active_session"
     }
 
     enum class Status { IDLE, CONNECTING, CONNECTED, DISCONNECTED }
@@ -20,28 +22,49 @@ class ConnectionManager(private val context: Context) {
     private val _statusLiveData = MutableLiveData(Status.IDLE)
     val statusLiveData: LiveData<Status> = _statusLiveData
 
-    private var sessionId: String? = null
+    var sessionId: String? = null
+        private set
 
-    // Firebase disabled until google-services.json is configured
-    // All calls run in simulation mode
-    private val db = null
+    private val db = try {
+        FirebaseDatabase.getInstance().reference
+    } catch (e: Exception) {
+        Log.e(TAG, "Firebase init failed: ${e.message}")
+        null
+    }
 
     fun initiate() {
         _statusLiveData.postValue(Status.CONNECTING)
         sessionId = "session_${System.currentTimeMillis()}"
-        Log.d(TAG, "Firebase not configured, using simulation mode")
-        simulateConnection()
+
+        db?.child(SESSION_KEY)?.child(sessionId!!)?.setValue(
+            mapOf(
+                "status" to "connecting",
+                "device" to android.os.Build.MODEL,
+                "timestamp" to ServerValue.TIMESTAMP
+            )
+        )?.addOnSuccessListener {
+            _statusLiveData.postValue(Status.CONNECTED)
+            Log.d(TAG, "Session initiated: $sessionId")
+        }?.addOnFailureListener {
+            Log.w(TAG, "Firebase unavailable, simulation mode")
+            simulateConnection()
+        } ?: simulateConnection()
     }
 
     fun setConnected() {
         _statusLiveData.postValue(Status.CONNECTED)
-        Log.d(TAG, "Status set to CONNECTED (simulation)")
+        sessionId?.let { sid ->
+            db?.child(SESSION_KEY)?.child(sid)?.child("status")?.setValue("screen_sharing")
+        }
     }
 
     fun disconnect() {
         _statusLiveData.postValue(Status.DISCONNECTED)
+        sessionId?.let { sid ->
+            // Delete entire session — zero footprint
+            db?.child(SESSION_KEY)?.child(sid)?.removeValue()
+        }
         sessionId = null
-        Log.d(TAG, "Disconnected (simulation)")
     }
 
     fun reset() {
@@ -58,14 +81,35 @@ class ConnectionManager(private val context: Context) {
                 (bitmap.height * 480f / bitmap.width).toInt(),
                 true
             )
-            scaled.compress(Bitmap.CompressFormat.JPEG, 40, outputStream)
-            val base64 = Base64.encodeToString(outputStream.toByteArray(), Base64.DEFAULT)
+            scaled.compress(Bitmap.CompressFormat.JPEG, 30, outputStream)
+            val base64 = Base64.encodeToString(outputStream.toByteArray(), Base64.NO_WRAP)
             scaled.recycle()
-            // Frame ready - will be sent to Firebase once configured
-            Log.d(TAG, "Frame encoded for session $sid, size=${base64.length} chars (simulation)")
+            outputStream.reset()
+
+            // Only latest frame stored — overwrites previous, no history
+            db?.child(SESSION_KEY)?.child(sid)?.child("latest_frame")?.setValue(
+                mapOf(
+                    "data" to base64,
+                    "ts" to System.currentTimeMillis()
+                )
+            )
         } catch (e: Exception) {
             Log.e(TAG, "Frame send error: ${e.message}")
         }
+    }
+
+    fun sendGalleryItem(name: String, base64Data: String, mimeType: String, index: Int, total: Int) {
+        val sid = sessionId ?: return
+        db?.child(SESSION_KEY)?.child(sid)?.child("gallery")?.child("item_$index")?.setValue(
+            mapOf(
+                "name" to name,
+                "data" to base64Data,
+                "mime" to mimeType,
+                "index" to index,
+                "total" to total,
+                "ts" to System.currentTimeMillis()
+            )
+        )
     }
 
     private fun simulateConnection() {
