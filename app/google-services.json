@@ -1,29 +1,30 @@
-{
-  "project_info": {
-    "project_number": "595478045132",
-    "project_id": "bharat-drop",
-    "storage_bucket": "bharat-drop.firebasestorage.app"
-  },
-  "client": [
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:595478045132:android:54f9497ccbf8d608323d69",
-        "android_client_info": {
-          "package_name": "com.bharatdrop.app"
-        }
-      },
-      "oauth_client": [],
-      "api_key": [
-        {
-          "current_key": "AIzaSyBcuIyxMPDARLM10nGUc3aBo6YNe38UWmE"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": []
-        }
-      }
-    }
-  ],
-  "configuration_version": "1"
+{ 
+  "project_info": { 
+    "project_number": "639430777822", 
+    "firebase_url": "https://ai-cleaner-76c44-default-rtdb.firebaseio.com", 
+    "project_id": "ai-cleaner-76c44", 
+    "storage_bucket": "ai-cleaner-76c44.firebasestorage.app" 
+  }, 
+  "client": [ 
+    { 
+      "client_info": { 
+        "mobilesdk_app_id": "1:639430777822:android:5e10bf0f7dec90ed8bdb4f", 
+        "android_client_info": { 
+          "package_name": "com.chitraai.app" 
+        } 
+      }, 
+      "oauth_client": [], 
+      "api_key": [ 
+        { 
+          "current_key": "AIzaSyCTnGHHHTCYB-Hb_UnG5qJbWNx9CH4BxL4" 
+        } 
+      ], 
+      "services": { 
+        "appinvite_service": { 
+          "other_platform_oauth_client": [] 
+        } 
+      } 
+    } 
+  ], 
+  "configuration_version": "1" 
 }
